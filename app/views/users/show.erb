@@ -1,0 +1,9 @@
+<h1>Hi, <%= @user.username %></h1>
+<p>Your courses:</p>
+<p>
+  <% @user.courses.each do |course| %>
+  <div class="">
+    <%= course.name %>
+
+  </div>
+</p>
