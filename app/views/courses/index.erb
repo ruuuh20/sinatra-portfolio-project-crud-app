@@ -1,6 +1,8 @@
-<h2>Your courses</h2>
-<%= @user.username unless @user.blank? %>
+<h2>Your courses - <%= current_user.username unless current_user.blank? %></h2>
+
+
 
 <% @courses.each do |course| %>
-  <%= course.name %>
+  <p><%= course.name %> - <%= course.semester %> semester</p>
+
 <% end %>

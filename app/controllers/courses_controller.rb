@@ -11,15 +11,33 @@ class CoursesController < ApplicationController
     end
   end
 
+  # Register a new course
+   get '/courses/new' do
+     @semester_list = ['Fall', 'Winter', 'Spring', 'Summer']  #for checkboxes
+     erb :'courses/new'
+   end
+
 # submitted from New Course form
   post '/courses' do
-    @course = Course.create(:name => params[:name], :semester => params[:semester])
-    redirect to '/courses'
+    if params[:name] == "" || params[:semester] == ""
+      redirect to '/courses/new'
+    else
+      @course = current_user.courses.create(:name => params[:name], :semester => params[:semester])
+      redirect to "/courses/#{@course.id}"    #show
+    end
   end
 
-  get '/courses/new' do
-    erb :'courses/new'
-  end
+# show
+get '/courses/:id' do
+  redirect_if_not_logged_in
+  @course = Course.find(params[:id])
+  erb :'courses/show'
+end
+
+# edit
+get '/courses/:id/edit' do
+  
+end
 
 
 end

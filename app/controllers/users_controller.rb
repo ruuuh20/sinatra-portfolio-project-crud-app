@@ -62,5 +62,18 @@ class UsersController < ApplicationController
     erb :'users/show'
   end
 
+  #login
+
+
+  #logout
+  get '/logout' do
+    if session[:user_id]
+      logout!
+      redirect to '/'
+    else
+      redirect to '/'
+    end
+  end
+
 
 end
