@@ -2,8 +2,9 @@
 <p>Your courses:</p>
 <p>
   <% @user.courses.each do |course| %>
-  <div class="">
+  <div >
     <%= course.name %>
 
   </div>
+  <% end %>
 </p>

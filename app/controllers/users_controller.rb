@@ -21,9 +21,11 @@ class UsersController < ApplicationController
     if params[:username] == "" || params[:password] == ""
       redirect to 'users/signup'
     else
-      @user = User.new(:username => params[:username], :password => params[:password], :grade_level => params[:grade_level])
-      @user.save
+      @user = User.create(:username => params[:username], :password => params[:password], :grade_level => params[:grade_level])
+      # @user.save
       session[:user_id] = @user.id
+      # raise params.inspect
+      # raise @user.username
       redirect to '/courses'  # courses index
     end
 
