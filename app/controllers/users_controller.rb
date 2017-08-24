@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
 # sign up
   get '/users/signup' do
-    if session[:user_id]
+    if current_user
       redirect to '/courses'
 
     else
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
 # login
   get '/users/login' do
-    if session[:user_id]
+    if logged_in?
       redirect to '/courses'
 
     else
@@ -46,9 +46,9 @@ class UsersController < ApplicationController
 
   # submitting login form
   post '/login' do
-    @user = User.find_by(:username => params[:username])
-    if @user && @user.authenticate(params[:password])
-      session[:user_id] = @user.id
+    user = User.find_by(:username => params[:username])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
       redirect to '/courses'
     else
       redirect to '/users/login'

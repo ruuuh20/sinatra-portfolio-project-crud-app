@@ -21,4 +21,13 @@ AssignmentsController
 
 
 Can add a book to course
-checkboxes for semester 
+checkboxes for semester
+
+
+Add validations !?
+
+
+VIEWS
+Courses index
+- Edit
+- Delete

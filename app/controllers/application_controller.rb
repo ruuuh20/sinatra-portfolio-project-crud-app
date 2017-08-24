@@ -18,17 +18,19 @@ helpers do
       redirect "/login?error=You have to be logged in to do that"
     end
   end
-  
+
   def logged_in?
-    !!session[:user_id]
+    !!current_user
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    @current_user ||= User.find(session[:id]) if session[:id]
   end
 
   def logout!
-    session.clear
+    if session[:user_id]
+      session.clear
+    end
   end
 end
 

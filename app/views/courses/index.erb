@@ -3,6 +3,9 @@
 
 
 <% @courses.each do |course| %>
-  <p><%= course.name %> - <%= course.semester %> semester</p>
+  <p><%= course.name %> - <%= course.semester %> semester </br>
+  - <a href="/courses/<% course.id %>/edit">Edit Course</a>
+  - <a href="/courses/<% course.id %>/delete">Delete</a>
+  </p>
 
 <% end %>

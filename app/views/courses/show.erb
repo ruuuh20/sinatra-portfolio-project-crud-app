@@ -1,4 +1,17 @@
-<p>You are registered for <%= @course.name %> for the <%= @course.semester %> semester.</p>
+<p>You are registered for <%= @course.name %> for the <%= @course.semester %> semester. <a href="/courses/<%= @course.id %>/edit">Edit Class Info</a></p>
 
+
+
+<p>
 Book List: <br>
-<a href="/books">Add a book</a>
+<ul>
+  <% @course.books.each do |book| %>
+    <li><a href="/books/<%= book.id %>"><%= book.title %></a></li>
+  <% end %>
+</ul>
+
+
+</p>
+
+
+<a href="/books/new">Add a book</a>
