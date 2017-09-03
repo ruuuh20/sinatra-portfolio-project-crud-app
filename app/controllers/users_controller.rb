@@ -34,6 +34,7 @@ class UsersController < ApplicationController
 
 # login
   get '/users/login' do
+    @error_message = params[:error]
     if logged_in?
       redirect to '/courses'
 

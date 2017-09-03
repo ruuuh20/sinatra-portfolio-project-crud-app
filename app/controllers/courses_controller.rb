@@ -3,7 +3,8 @@ class CoursesController < ApplicationController
 
   # index - courses/index
   get '/courses' do
-    if session[:user_id]
+    # if session[:user_id]
+    if current_user
       @courses = Course.all
       erb :'courses/index'
     else
@@ -13,6 +14,9 @@ class CoursesController < ApplicationController
 
   # Register a new course
    get '/courses/new' do
+     # redirect to users/login
+     redirect_if_not_logged_in
+     @error_message = params[:error]
      @semester_list = ['Fall', 'Winter', 'Spring', 'Summer']  #for checkboxes
      erb :'courses/new'
    end
@@ -30,21 +34,22 @@ class CoursesController < ApplicationController
 # show
 get '/courses/:id' do
   redirect_if_not_logged_in
-  @course = Course.find_by(params[:id])
+  @course = Course.find_by_id(params[:id])
   erb :'courses/show'
 end
 
 # edit
 get '/courses/:id/edit' do
+  redirect_if_not_logged_in
+  @error_message = params[:error]
+  @semester_list = ['Fall', 'Winter', 'Spring', 'Summer']  #for checkboxes
   if logged_in?
-    @course = Course.find_by(params[:id])
+    @course = Course.find_by_id(params[:id])
     if @course.user_id == current_user.id #validating
       erb :'/courses/edit'
     else
       redirect to '/courses'
     end
-  else
-    redirect_if_not_logged_in
   end
 
 end
@@ -53,7 +58,7 @@ patch '/courses/:id' do
   if params[:name] == ""
     redirect to "/courses/#{params[:id]}/edit"
   else
-    @course = Course.find_by(params[:id])
+    @course = Course.find_by_id(params[:id])
     @course.update(params)
     redirect to "/courses/#{@course.id}"
   end

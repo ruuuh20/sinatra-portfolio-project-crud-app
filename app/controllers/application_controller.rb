@@ -15,7 +15,7 @@ helpers do
 
   def redirect_if_not_logged_in
     if !logged_in?
-      redirect "/login?error=You have to be logged in to do that"
+      redirect "users/login?error=You must be logged in."
     end
   end
 
@@ -24,7 +24,7 @@ helpers do
   end
 
   def current_user
-    @current_user ||= User.find(session[:id]) if session[:id]
+    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
   end
 
   def logout!
