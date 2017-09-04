@@ -60,7 +60,7 @@ patch '/courses/:id' do
     redirect to "/courses/#{params[:id]}/edit"
   else
     @course = Course.find_by_id(params[:id])
-    @course.update(params)
+    @course.update(params.select{|b| b=="name" || b=="semester"})
     redirect to "/courses/#{@course.id}"
   end
 

@@ -16,6 +16,9 @@ end
 
 # new book posted
   post '/books' do
+    unless Book.valid_params?(params)
+      redirect to '/books/new'
+    end
     # binding.pry
     if current_user
       # adding book to the specific course of the current user (courses.last?)
@@ -51,13 +54,13 @@ end
   end
 
   patch '/books/:id' do
-    if params[:title] == ""
-      redirect to "/books/#{params[:id]}/edit"
-    else
       @book = Book.find_by_id(params[:id])
+      unless Book.valid_params?(params)
+        redirect "/books/#{@book.id}/edit"
+      end
       @book.update(params.select{|b| b=="title" || b=="author" || b=="ISBN"})
       redirect to "/books/#{@book.id}"
-    end
+    
   end
 
 
