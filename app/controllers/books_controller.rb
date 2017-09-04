@@ -3,6 +3,7 @@ class BooksController < ApplicationController
 
 # index
 get '/books' do
+  redirect_if_not_logged_in
   @books = Book.all
   erb :'books/index'
 

@@ -5,16 +5,29 @@
     <meta charset="utf-8">
     <title>Reading Program</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Mada" rel="stylesheet">
+
+    <style>
+    *{
+      font-family: Mada;
+    }
+
+    </style>
   </head>
   <body>
     <nav>
       <% if logged_in? %>
+      <div class="navbar" style="background-color:gray">
         <a href="/courses/new">Register New Course</a><br>
         <a href="/logout">Log Out</a>
+
         <p>Welcome, <%= current_user.username %></p>
+      </div>
       <% else %>
+      <div class="container">
         <a href="/users/signup">Sign Up</a>
         <a href="/users/login">Log In</a>
+      </div>
       <% end %>
     </nav>
     <div class="container">
@@ -23,8 +36,6 @@
        <div class="alert alert-warning">
          <%= @error_message %>
        </div>
-
-
 
        <% end  %>
 

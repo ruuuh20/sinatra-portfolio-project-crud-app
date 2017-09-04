@@ -6,11 +6,10 @@ class CoursesController < ApplicationController
   # index - courses/index
   get '/courses' do
     # if session[:user_id]
+    redirect_if_not_logged_in
     if current_user
       @courses = Course.all
       erb :'courses/index'
-    else
-      redirect to '/'
     end
   end
 
