@@ -4,8 +4,12 @@
 
 <% @courses.each do |course| %>
   <p><%= course.name %> - <%= course.semester %> semester </br>
-  - <a href="/courses/<%= course.id %>/edit">Edit Course</a>
-  - <a href="/courses/<%= course.id %>/delete">Delete</a>
+  - <a href="/courses/<%= course.id %>/edit">Edit Course</a><br>
+  <form action="/courses/<%= course.id %>/delete" method="post">
+    <input type="hidden" id="hidden" name="_method" value="Delete">
+    <input type="submit" value="Delete Course">
+  </form>
+
   </p>
 
 <% end %>

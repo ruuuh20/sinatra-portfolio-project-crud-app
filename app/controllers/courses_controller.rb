@@ -1,3 +1,5 @@
+
+
 class CoursesController < ApplicationController
 
 
@@ -81,7 +83,9 @@ delete '/courses/:id/delete' do
   if course && course.destroy
     redirect to '/courses'
   else
-    redirect to "/courses/#{course.id}"
+
+    #  flash[:error] = "You do not have access"
+    redirect to "/courses"
   end
 
 end

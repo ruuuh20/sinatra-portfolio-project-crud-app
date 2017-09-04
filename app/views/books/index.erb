@@ -1,3 +1,16 @@
+
+
 <% @books.each do |book| %>
-  <%= book.title %> - <%= book.author %>
+  <%= book.title %> - <%= book.author %><br/>
+  <a href="/books/<%=book.id%>/edit">Edit Book</a><br/>
 <% end %>
+
+<p>
+  <ul>
+My courses:
+<% current_user.courses.each do |c| %>
+  <li><a href="/courses/<%= c.id %>"><%= c.name %></a></li>
+  <% end %>
+
+</ul>
+</p>

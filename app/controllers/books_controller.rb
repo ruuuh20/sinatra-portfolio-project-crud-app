@@ -1,3 +1,4 @@
+require 'pry'
 class BooksController < ApplicationController
 
 # index
@@ -14,12 +15,23 @@ end
 
 # new book posted
   post '/books' do
+    # binding.pry
     if current_user
-      @book = Book.create(:title => params[:title], :author => params[:author], :ISBN=> params[:ISBN])
+      # adding book to the specific course of the current user (courses.last?)
+      @book = current_user.courses.last.books.create(:title => params[:title], :author => params[:author], :ISBN=> params[:ISBN])
+
       redirect to '/books'
     else
       redirect to '/'
     end
+  end
+
+  # show
+  get '/books/:id' do
+    redirect_if_not_logged_in
+    @book = Book.find_by_id(params[:id])
+    # binding.pry
+    erb :'books/show'
   end
 
 
@@ -27,10 +39,25 @@ end
     redirect_if_not_logged_in
     @error_message = params[:error]
     @book = Book.find_by_id(params[:id])
-      # validte?? if @book.course_id == current_user.id #validating
-    erb :'/books/edit'
-      end
+    # binding.pry
+      # validte??
+    #  if @book.course_id == current_user.courses[].books.course_id
+         erb :'/books/edit'
+      #  else
+      #    redirect to '/books'
+      #  end
+    # erb :'/books/edit'
+  end
+
+  patch '/books/:id' do
+    if params[:title] == ""
+      redirect to "/books/#{params[:id]}/edit"
+    else
+      @book = Book.find_by_id(params[:id])
+      @book.update(params.select{|b| b=="title" || b=="author" || b=="ISBN"})
+      redirect to "/books/#{@book.id}"
     end
   end
+
 
 end
