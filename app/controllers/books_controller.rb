@@ -42,15 +42,21 @@ end
   get '/books/:id/edit' do
     redirect_if_not_logged_in
     @error_message = params[:error]
-    @book = Book.find_by_id(params[:id])
+    # @book = Book.find_by_id(params[:id])
     # binding.pry
       # validte??
-    #  if @book.course_id == current_user.courses[].books.course_id
-         erb :'/books/edit'
-      #  else
-      #    redirect to '/books'
-      #  end
-    # erb :'/books/edit'
+    @book = Book.find_by_id(params[:id])
+    book_course_id = @book.course_id
+    course = Course.find_by_id(book_course_id)
+        #  if logged_in?
+
+          #  binding.pry
+
+           if @book.course_id == course.id #validating
+             erb :'/books/edit'
+           else
+             redirect to '/books'
+           end
   end
 
   patch '/books/:id' do
@@ -60,7 +66,7 @@ end
       end
       @book.update(params.select{|b| b=="title" || b=="author" || b=="ISBN"})
       redirect to "/books/#{@book.id}"
-    
+
   end
 
 
