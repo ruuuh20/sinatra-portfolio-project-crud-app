@@ -2,36 +2,39 @@ require 'pry'
 class BooksController < ApplicationController
 
 # index
-get '/books' do
+get '/courses/:course_id/books' do
   redirect_if_not_logged_in
-  @books = Book.all
+  @course = Course.find_by(id: params[:course_id])
+  @books = @course.books
   erb :'books/index'
 
 end
 
-get '/books/new' do
+get '/courses/:course_id/books/new' do
   redirect_if_not_logged_in
   erb :'books/new'
 end
 
 # new book posted
-  post '/books' do
-    unless Book.valid_params?(params)
-      redirect to '/books/new'
-    end
-    # binding.pry
-    if current_user
-      # adding book to the specific course of the current user (courses.last?)
-      @book = current_user.courses.last.books.create(:title => params[:title], :author => params[:author], :ISBN=> params[:ISBN])
-
+post '/courses/:course_id/books' do
+  redirect_if_not_logged_in
+  unless Book.valid_params?(params)
+    redirect to '/books/new'
+  end
+  if @course = current_user.courses.find_by(id: params[:course_id])
+    @book = @course.books.build(:title => params[:title], :author => params[:author], :ISBN=> params[:ISBN])
+    if @book.save
       redirect to '/books'
     else
-      redirect to '/'
+      redirect to "/courses/#{@course.id}/books/new"
     end
+  else
+    redirect to "/courses"
   end
+end
 
   # show
-  get '/books/:id' do
+  get '/courses/:course_id/books/:id' do
     redirect_if_not_logged_in
     @book = Book.find_by_id(params[:id])
     # binding.pry
@@ -39,7 +42,7 @@ end
   end
 
 
-  get '/books/:id/edit' do
+  get '/courses/:course_id/books/:id/edit' do
     redirect_if_not_logged_in
     @error_message = params[:error]
     # @book = Book.find_by_id(params[:id])
@@ -48,9 +51,6 @@ end
     @book = Book.find_by_id(params[:id])
     book_course_id = @book.course_id
     course = Course.find_by_id(book_course_id)
-        #  if logged_in?
-
-          #  binding.pry
 
            if @book.course_id == course.id #validating
              erb :'/books/edit'
@@ -59,7 +59,7 @@ end
            end
   end
 
-  patch '/books/:id' do
+  patch '/courses/:course_id/books/:id' do
       @book = Book.find_by_id(params[:id])
       unless Book.valid_params?(params)
         redirect "/books/#{@book.id}/edit"
@@ -68,6 +68,4 @@ end
       redirect to "/books/#{@book.id}"
 
   end
-
-
 end

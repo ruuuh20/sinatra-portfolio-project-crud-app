@@ -15,7 +15,7 @@ helpers do
 
   def redirect_if_not_logged_in
     if !logged_in?
-      redirect "users/login?error=You must be logged in."
+      redirect "users/login?error=You must be logged in"
     end
   end
 

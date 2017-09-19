@@ -1,17 +1,14 @@
-
 <h2>My username: <%= current_user.username unless current_user.blank? %></h2>
 <h2>Course List</h2>
-
-
-
 <% @courses.each do |course| %>
-  <p><%= course.name %> - <%= course.semester %> semester </br>
-  - <a href="/courses/<%= course.id %>/edit">Edit Course</a><br>
-  <form action="/courses/<%= course.id %>/delete" method="post">
-    <input type="hidden" id="hidden" name="_method" value="Delete">
-    <input type="submit" value="Delete Course">
-  </form>
-
+  <p>
+    <a href="/courses/<%= course.id %>"><%= course.name %> </a> - <%= course.semester %> semester </br>
+    <% if course.user == current_user %>
+      - <a href="/courses/<%= course.id %>/edit">Edit Course</a><br>
+      <form action="/courses/<%= course.id %>/delete" method="post">
+        <input type="hidden" id="hidden" name="_method" value="Delete">
+        <input type="submit" value="Delete Course">
+      </form>
+    <% end %>
   </p>
-
 <% end %>

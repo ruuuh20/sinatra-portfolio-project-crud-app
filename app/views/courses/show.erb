@@ -6,7 +6,7 @@
 Book List: <br>
 <ul>
   <% @course.books.each do |book| %>
-    <li><a href="/books/<%= book.id %>"><%= book.title %></a></li>
+    <li><a href="/courses/<%= @course.id %>/books/<%= book.id %>"><%= book.title %></a></li>
   <% end %>
 </ul>
 
@@ -14,5 +14,5 @@ Book List: <br>
 </p>
 
 
-<a href="/books/new">Add a book for this course</a><br>
+<a href="/courses/<%= @course.id %>/books/new">Add a book for this course</a><br>
 <a href="/courses">Go back to Classes</a>

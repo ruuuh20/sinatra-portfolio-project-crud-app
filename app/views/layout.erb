@@ -18,7 +18,8 @@
     <nav>
       <% if logged_in? %>
       <div class="navbar">
-        <a href="/courses/new">Register New Course</a><br>
+        <a href="/courses/new">Register New Course</a>
+        <a href="/courses">Go To Courses</a>
         <a href="/logout">Log Out</a>
 
         <p>Welcome, <%= current_user.username %></p>
@@ -30,10 +31,11 @@
       </div>
       <% end %>
     </nav>
+    <hr />
     <div class="container">
       <h1>Reading Program - Student Dashboard</h1>
       <% if !@error_message.nil? %>
-       <div class="alert alert-warning">
+       <div class="alert alert-waxrning">
          <%= @error_message %>
        </div>
 
