@@ -1,6 +1,6 @@
-<h2>Add a book</h2>
+<h2>Add a book for <%= @course.name %></h2>
 
-<form action="/books" method="post">
+<form action="/courses/<%= @course.id %>/books" method="post">
   <label for="title">Book Title:</label>
   <input type="text" name="title" id="title"><br>
 

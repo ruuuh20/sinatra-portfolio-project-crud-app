@@ -1,10 +1,9 @@
 require 'pry'
 class BooksController < ApplicationController
 
-# index
 get '/courses/:course_id/books' do
   redirect_if_not_logged_in
-  @course = Course.find_by(id: params[:course_id])
+  @course = current_user.courses.find_by(id: params[:course_id])
   @books = @course.books
   erb :'books/index'
 
@@ -12,28 +11,29 @@ end
 
 get '/courses/:course_id/books/new' do
   redirect_if_not_logged_in
+  @course = current_user.courses.find_by_id(params[:course_id])
   erb :'books/new'
 end
 
-# new book posted
 post '/courses/:course_id/books' do
   redirect_if_not_logged_in
-  unless Book.valid_params?(params)
-    redirect to '/books/new'
-  end
-  if @course = current_user.courses.find_by(id: params[:course_id])
-    @book = @course.books.build(:title => params[:title], :author => params[:author], :ISBN=> params[:ISBN])
+    unless Book.valid_params?(params)
+      redirect to '/books/new'
+    end
+    # binding.pry
+
+  @course = current_user.courses.find_by(id: params[:course_id])
+  # binding.pry
+  @book = @course.books.build(:title => params[:title], :author => params[:author], :ISBN=> params[:ISBN], :course_id => params[:course_id])
+
+
     if @book.save
-      redirect to '/books'
+      redirect to "courses/#{@course.id}/books"
     else
       redirect to "/courses/#{@course.id}/books/new"
     end
-  else
-    redirect to "/courses"
-  end
 end
 
-  # show
   get '/courses/:course_id/books/:id' do
     redirect_if_not_logged_in
     @book = Book.find_by_id(params[:id])
@@ -46,17 +46,14 @@ end
     redirect_if_not_logged_in
     @error_message = params[:error]
     # @book = Book.find_by_id(params[:id])
-    # binding.pry
-      # validte??
     @book = Book.find_by_id(params[:id])
     book_course_id = @book.course_id
     course = Course.find_by_id(book_course_id)
-
-           if @book.course_id == course.id #validating
+          if @book.course_id == course.id #validating
              erb :'/books/edit'
-           else
+          else
              redirect to '/books'
-           end
+          end
   end
 
   patch '/courses/:course_id/books/:id' do
