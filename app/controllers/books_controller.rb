@@ -20,13 +20,8 @@ post '/courses/:course_id/books' do
     unless Book.valid_params?(params)
       redirect to '/books/new'
     end
-    # binding.pry
-
   @course = current_user.courses.find_by(id: params[:course_id])
-  # binding.pry
   @book = @course.books.build(:title => params[:title], :author => params[:author], :ISBN=> params[:ISBN], :course_id => params[:course_id])
-
-
     if @book.save
       redirect to "courses/#{@course.id}/books"
     else
@@ -37,7 +32,6 @@ end
   get '/courses/:course_id/books/:id' do
     redirect_if_not_logged_in
     @book = Book.find_by_id(params[:id])
-    # binding.pry
     erb :'books/show'
   end
 
@@ -45,11 +39,10 @@ end
   get '/courses/:course_id/books/:id/edit' do
     redirect_if_not_logged_in
     @error_message = params[:error]
-    # @book = Book.find_by_id(params[:id])
     @book = Book.find_by_id(params[:id])
     book_course_id = @book.course_id
     course = Course.find_by_id(book_course_id)
-          if @book.course_id == course.id #validating
+          if @book.course_id == course.id
              erb :'/books/edit'
           else
              redirect to '/books'
@@ -63,6 +56,5 @@ end
       end
       @book.update(params.select{|b| b=="title" || b=="author" || b=="ISBN"})
       redirect to "/books/#{@book.id}"
-
   end
 end
